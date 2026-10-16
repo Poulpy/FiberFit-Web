@@ -28,6 +28,7 @@ function App() {
         >
           Count is {count}
         </button>
+        <MyButton />
       </section>
 
       <div className="ticks"></div>
@@ -117,6 +118,12 @@ function App() {
       <section id="spacer"></section>
     </>
   )
+}
+
+function MyButton() {
+  return (
+    <button>I'm a button</button>
+  );
 }
 
 export default App
