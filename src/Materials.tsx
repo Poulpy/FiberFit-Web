@@ -11,7 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const url = "http://localhost:3000/materials";
   const [materials, setMaterials] = useState<Material[]>([])
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchData() {
