@@ -4,7 +4,7 @@ import './App.css'
 type Material = {
   id: number
   name: string
-  material_type: string
+  supply_type: string
 }
 
 function App() {
@@ -27,9 +27,16 @@ function App() {
         setMaterials(resultat)
         setLoading(false)
       } catch (erreur) {
+        if (erreur instanceof NetworkError) {
+          setError(erreur.message)
+          setLoading(false)
+
+        } else {
+          setError(erreur.message)
+          setLoading(false)
+
+        }
         console.error(erreur.message);
-        setError(erreur.message)
-        setLoading(false)
       }
     }
     fetchData();
