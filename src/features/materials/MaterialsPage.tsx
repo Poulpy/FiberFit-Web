@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react'
-import './App.css'
+// import './App.css'
+import './materials.types.ts'
 
-type Material = {
-  id: number
-  name: string
-  supply_type: string
-}
 
-function App() {
+function MaterialsPage() {
   const [loading, setLoading] = useState(true)
   const url = "http://localhost:3000/materials";
   const [materials, setMaterials] = useState<Material[]>([])
@@ -57,7 +53,9 @@ function App() {
     <ul>
       {materials.map(material =>
         <li key={material.id}>
-          {material.name}, {material.material_type}
+          {material.name}, {material.supply_type}, color: {material.color}, stock: {material.stock_quantity}
+          <br />
+          yarn weight: {material.yarn_weight_class}
         </li>
       )}
      </ul>
@@ -65,4 +63,4 @@ function App() {
 }
 
 
-export default App
+export default MaterialsPage
