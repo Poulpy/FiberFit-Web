@@ -1,12 +1,5 @@
-import { useState, useEffect } from 'react'
-import './materials.types.ts'
-
-
 function MaterialForm() {
-  return (
-    < >
-     < />
-    )
+  return <p>Material form</p>
 }
 
 
