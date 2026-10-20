@@ -34,7 +34,22 @@ function ErrorMessages({ requestError, validationErrors }: ErrorMessagesProps) {
   return null
 }
 
-function SupplyTypePicker() {
+type SupplyTypePickerProps = {
+  value: string
+  onChange: (value: string) => void
+}
+
+function SubmitButton({ loading }: { loading: boolean }) {
+  return loading ? (
+    <button type="submit" disabled>
+      Chargement...
+    </button>
+  ) : (
+    <button type="submit">Create material</button>
+  )
+}
+
+function SupplyTypePicker({ value, onChange }: SupplyTypePickerProps) {
   const supplyTypes = [
     { value: 'yarn', label: 'Yarn' },
     { value: 'crochet_thread', label: 'Crochet thread' },
@@ -47,7 +62,11 @@ function SupplyTypePicker() {
   ]
 
   return (
-    <select name="supply_type" defaultValue="yarn">
+    <select
+      name="supply_type"
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    >
       {supplyTypes.map((supplyType) => (
         <option key={supplyType.value} value={supplyType.value}>
           {supplyType.label}
@@ -108,18 +127,11 @@ function YarnWeightClassPicker() {
 
 function Create() {
   const navigate = useNavigate()
+  const [supplyType, setSupplyType] = useState('yarn')
   const [requestError, setRequestError] = useState<string | null>(null)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors | null>(null)
   const [loading, setLoading] = useState(false)
 
-
-  function SubmitButton() {
-    if (loading) {
-      return <button type="submit" disabled="true">Chargement...</button>
-    } else {
-      return <button type="submit">Create material</button>
-    }
-  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -183,7 +195,7 @@ function Create() {
       />
       <input type="text" name="name" defaultValue="" />
 
-      <SupplyTypePicker />
+      <SupplyTypePicker value={supplyType} onChange={setSupplyType} />
 
       <input type="text" name="color" defaultValue="" placeholder="pink" />
       <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
@@ -192,9 +204,10 @@ function Create() {
 
       <input type="number" min="0" name="length_per_unit_m" defaultValue="" />
 
-      <YarnWeightClassPicker />
+      {supplyType === "yarn" && <YarnWeightClassPicker />}
 
-      <SubmitButton />
+
+      <SubmitButton loading={loading} />
     </form>
   )
 }
