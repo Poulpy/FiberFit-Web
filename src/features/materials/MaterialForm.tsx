@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 function MaterialForm() {
   return <>
-    <Create />
+  <Create />
   </>
 }
 
@@ -53,49 +53,93 @@ function Create() {
     }
   }
 
-  return <>
-    <form onSubmit={handleSubmit}>
-      <ErrorParagraph />
+  function SupplyTypePicker() {
+    const supplyTypes = [
+      {value: "yarn", label: "Yarn"},
+      {value: "crochet_thread", label: "Crochet thread"},
+      {value: "sewing_thread", label: "Sewing thread"},
+      {value: "embroidery_floss", label: "Embroidery floss"},
+      {value: "fabric", label: "Fabric"},
+      {value: "elastic", label: "Elastic"},
+      {value: "ribbon", label: "Ribbon"},
+      {value: "cord", label: "Cord"}
+    ]
 
-      <input type="text" name="name" defaultValue="" />
+    const options = supplyTypes.map( (supplyType) =>
+      <option key={supplyType.value} value={supplyType.value}>{supplyType.label}</option>
+    )
+
+    return (
       <select name="supply_type">
-        <option value="yarn">Yarn</option>
-        <option value="crochet_thread">Crochet thread</option>
-        <option value="sewing_thread">Sewing thread</option>
-        <option value="embroidery_floss">Embroidery floss</option>
-        <option value="fabric">Fabric</option>
-        <option value="elastic">Elastic</option>
-        <option value="ribbon">Ribbon</option>
-        <option value="cord">Cord</option>
+        {options}
       </select>
-      <input type="text" name="color" defaultValue="" placeholder="pink" />
-      <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
-      <select name="stock_unit">
-        <option value="skein">Skein</option>
-        <option value="ball">Ball</option>
-        <option value="cone">Cone</option>
-        <option value="spool">Spool</option>
-        <option value="bobbin">Bobbin</option>
-        <option value="piece">Piece</option>
-        <option value="pair">Pair</option>
-        <option value="set">Set</option>
-        <option value="pack">Pack</option>
-      </select>
-      <input type="number" min="0" name="length_per_unit_m" defaultValue="" />
-      <select name="yarn_weight_class">
-        <option value="lace_0">Lace</option>
-        <option value="super_fine_1">Super fine</option>
-        <option value="fine_2">Fine</option>
-        <option value="light_3">Light</option>
-        <option value="medium_4">Medium</option>
-        <option value="bulky_5">Bulky</option>
-        <option value="super_bulky_6">Super bulky</option>
-        <option value="jumbo_7">Jumbo</option>
-        <option value="unknown">Unknown</option>
-      </select>
+    )
+  }
 
-      <button type="submit">Create material</button>
-    </form>
+  function StockUnitPicker() {
+    const stockUnits = [
+      {value: "skein", label: "Skein"},
+      {value: "ball", label: "Ball"},
+      {value: "cone", label: "Cone"},
+      {value: "spool", label: "Spool floss"},
+      {value: "bobbin", label: "Bobbin"},
+      {value: "piece", label: "Piece"},
+      {value: "pair", label: "Pair"},
+      {value: "set", label: "Set"},
+      {value: "pack", label: "Pack"}
+    ]
+
+    const options = stockUnits.map( (stockUnit) =>
+      <option key={stockUnit.value} value={stockUnit.value}>{stockUnit.label}</option>
+    )
+
+    return (
+      <select name="stock_unit">
+        {options}
+      </select>
+    )
+  }
+
+  function YarnWeightClassPicker() {
+    const yarnWeightClasses = [
+      {value: "lace_0", label: "Lace"},
+      {value: "super_fine_1", label: "Super fine"},
+      {value: "fine_2", label: "Fine"},
+      {value: "light_3", label: "Light"},
+      {value: "medium_4", label: "Medium"},
+      {value: "bulky_5", label: "Bulky"},
+      {value: "super_bulky_6", label: "Super bulky"},
+      {value: "jumbo_7", label: "Jumbo"},
+      {value: "unknown", label: "Unknown"}
+    ]
+
+    const options = yarnWeightClasses.map( (yarnWeightClass) =>
+      <option key={yarnWeightClass.value} value={yarnWeightClass.value}>{yarnWeightClass.label}</option>
+    )
+
+    return (
+      <select name="yarn_weight_class">
+        {options}
+      </select>
+    )
+  }
+
+  return <>
+  <form onSubmit={handleSubmit}>
+    <ErrorParagraph />
+
+    <input type="text" name="name" defaultValue="" />
+
+    <SupplyTypePicker />
+
+    <input type="text" name="color" defaultValue="" placeholder="pink" />
+    <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
+    <StockUnitPicker />
+    <input type="number" min="0" name="length_per_unit_m" defaultValue="" />
+    <YarnWeightClassPicker />
+
+    <button type="submit">Create material</button>
+  </form>
   </>
 }
 
