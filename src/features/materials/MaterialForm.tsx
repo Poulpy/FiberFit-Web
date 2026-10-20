@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router";
 
 function MaterialForm() {
   return <>
@@ -8,8 +9,9 @@ function MaterialForm() {
 
 function Create() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  let navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const form = e.target
@@ -33,16 +35,23 @@ function Create() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(params)
         });
-        if (!response.ok) {
-          console.error("Error")
-          return
-        }
+        // if (!response.ok) {
+        //   console.error("Error")
+
+        // }
+        return response
+
       } catch(e) {
         setErrorMessage(e.message)
       }
     }
 
-    apiCall()
+    const response = await apiCall()
+
+    if (response.ok) {
+
+      navigate("/materials")
+    }
   }
 
   function ErrorParagraph() {
