@@ -105,15 +105,27 @@ function YarnWeightClassPicker() {
   )
 }
 
+
 function Create() {
   const navigate = useNavigate()
   const [requestError, setRequestError] = useState<string | null>(null)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors | null>(null)
+  const [loading, setLoading] = useState(false)
+
+
+  function SubmitButton() {
+    if (loading) {
+      return <button type="submit" disabled="true">Chargement...</button>
+    } else {
+      return <button type="submit">Create material</button>
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setRequestError(null)
     setValidationErrors(null)
+    setLoading(true)
 
     const formData = new FormData(event.currentTarget)
     const params = {
@@ -140,6 +152,7 @@ function Create() {
 
       const body = await response.json()
 
+      setLoading(false)
       if (!response.ok) {
         if (response.status === 422) {
           setValidationErrors(body as ValidationErrors)
@@ -153,6 +166,7 @@ function Create() {
         state: { message: 'Matériau créé avec succès' },
       })
     } catch (error) {
+      setLoading(false)
       setRequestError(
         error instanceof Error
           ? error.message
@@ -180,7 +194,7 @@ function Create() {
 
       <YarnWeightClassPicker />
 
-      <button type="submit">Create material</button>
+      <SubmitButton />
     </form>
   )
 }
