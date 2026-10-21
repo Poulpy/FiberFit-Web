@@ -86,7 +86,6 @@ function Create() {
 
       const body = await response.json()
 
-      setLoading(false)
       if (!response.ok) {
         if (response.status === 422) {
           setValidationErrors(body as ValidationErrors)
@@ -100,12 +99,13 @@ function Create() {
         state: { message: 'Matériau créé avec succès' },
       })
     } catch (error) {
-      setLoading(false)
       setRequestError(
         error instanceof Error
           ? error.message
           : 'Impossible de contacter le serveur',
       )
+    } finally {
+      setLoading(false)
     }
   }
 
