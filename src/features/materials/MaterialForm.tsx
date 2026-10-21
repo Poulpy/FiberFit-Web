@@ -1,23 +1,12 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router'
+import SelectField from '../../components/SelectField.tsx'
 
 type ValidationErrors = Record<string, string[]>
 
 type ErrorMessagesProps = {
   requestError: string | null
   validationErrors: ValidationErrors | null
-}
-
-type SelectOptions = {
-  value: string
-  label: string
-}
-type SelectFieldProps = {
-  label: string
-  name: string
-  defaultValue: string
-  onChange?: (value: string) => void
-  options: SelectOptions[]
 }
 
 function MaterialForm() {
@@ -56,20 +45,6 @@ function SubmitButton({ loading }: { loading: boolean }) {
   )
 }
 
-function SelectField(props: SelectFieldProps) {
-  return (
-    <label>
-      {props.label}
-      <select name={props.name} defaultValue={props.defaultValue} onChange={(event) => props.onChange?.(event.target.value)}>
-        {props.options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
-  )
-}
 
 function Create() {
   const navigate = useNavigate()
