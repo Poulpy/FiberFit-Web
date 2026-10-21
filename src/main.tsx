@@ -9,7 +9,6 @@ createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <Routes>
       <Route index element={<App />} />
-      {/*<Route path="about" element={<About />} />*/}
 
       <Route path="materials">
         <Route index element={<MaterialsPage />} />

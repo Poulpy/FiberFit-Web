@@ -4,6 +4,11 @@ export type Material = {
   supply_type: string,
   color: string,
   stock_quantity: number,
-  length_per_unit_m: number,
-  yarn_weight_class: string
+  stock_unit: string,
+  length_per_unit_m: number | null,
+  yarn_weight_class: string | null
+}
+
+export type MaterialProps = {
+  material: Material | null
 }
