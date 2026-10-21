@@ -114,13 +114,16 @@ function YarnWeightClassPicker() {
   ]
 
   return (
-    <select name="yarn_weight_class" defaultValue="lace_0">
-      {yarnWeightClasses.map((yarnWeightClass) => (
-        <option key={yarnWeightClass.value} value={yarnWeightClass.value}>
-          {yarnWeightClass.label}
-        </option>
-      ))}
-    </select>
+    <label>
+      Yarn weight class
+      <select name="yarn_weight_class" defaultValue="lace_0">
+        {yarnWeightClasses.map((yarnWeightClass) => (
+          <option key={yarnWeightClass.value} value={yarnWeightClass.value}>
+            {yarnWeightClass.label}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }
 
@@ -193,16 +196,35 @@ function Create() {
         requestError={requestError}
         validationErrors={validationErrors}
       />
-      <input type="text" name="name" defaultValue="" />
 
-      <SupplyTypePicker value={supplyType} onChange={setSupplyType} />
+      <label>Name
+        <input type="text" name="name" defaultValue="" />
+      </label>
 
-      <input type="text" name="color" defaultValue="" placeholder="pink" />
-      <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
+      <label>
+        Supply type
+        <SupplyTypePicker value={supplyType} onChange={setSupplyType} />
+      </label>
 
-      <StockUnitPicker />
+      <label>
+        Color
+        <input type="text" name="color" defaultValue="" placeholder="pink" />
+      </label>
+      <label>
+        Stock quantity
+        <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
+      </label>
 
-      <input type="number" min="0" name="length_per_unit_m" defaultValue="" />
+      <label>
+        Stock unit
+        <StockUnitPicker />
+      </label>
+
+      <label>
+        Length per unit m
+        <input type="number" min="0" name="length_per_unit_m" defaultValue="" />
+      </label>
+
 
       {supplyType === "yarn" && <YarnWeightClassPicker />}
 
