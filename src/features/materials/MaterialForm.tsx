@@ -8,6 +8,18 @@ type ErrorMessagesProps = {
   validationErrors: ValidationErrors | null
 }
 
+type SelectOptions = {
+  value: string
+  label: string
+}
+type SelectFieldProps = {
+  label: string
+  name: string
+  defaultValue: string
+  onChange?: (value: string) => void
+  options: SelectOptions[]
+}
+
 function MaterialForm() {
   return <Create />
 }
@@ -34,11 +46,6 @@ function ErrorMessages({ requestError, validationErrors }: ErrorMessagesProps) {
   return null
 }
 
-type SupplyTypePickerProps = {
-  value: string
-  onChange: (value: string) => void
-}
-
 function SubmitButton({ loading }: { loading: boolean }) {
   return loading ? (
     <button type="submit" disabled>
@@ -49,34 +56,38 @@ function SubmitButton({ loading }: { loading: boolean }) {
   )
 }
 
-function SupplyTypePicker({ value, onChange }: SupplyTypePickerProps) {
-  const supplyTypes = [
-    { value: 'yarn', label: 'Yarn' },
-    { value: 'crochet_thread', label: 'Crochet thread' },
-    { value: 'sewing_thread', label: 'Sewing thread' },
-    { value: 'embroidery_floss', label: 'Embroidery floss' },
-    { value: 'fabric', label: 'Fabric' },
-    { value: 'elastic', label: 'Elastic' },
-    { value: 'ribbon', label: 'Ribbon' },
-    { value: 'cord', label: 'Cord' },
-  ]
-
+function SelectField(props: SelectFieldProps) {
   return (
-    <select
-      name="supply_type"
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-    >
-      {supplyTypes.map((supplyType) => (
-        <option key={supplyType.value} value={supplyType.value}>
-          {supplyType.label}
-        </option>
-      ))}
-    </select>
+    <label>
+      {props.label}
+      <select name={props.name} defaultValue={props.defaultValue} onChange={(event) => props.onChange?.(event.target.value)}>
+        {props.options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }
 
-function StockUnitPicker() {
+function Create() {
+  const navigate = useNavigate()
+  const [supplyType, setSupplyType] = useState('yarn')
+  const [requestError, setRequestError] = useState<string | null>(null)
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors | null>(null)
+  const [loading, setLoading] = useState(false)
+  const yarnWeightClasses: SelectOptions[] = [
+    { value: 'lace_0', label: 'Lace' },
+    { value: 'super_fine_1', label: 'Super fine' },
+    { value: 'fine_2', label: 'Fine' },
+    { value: 'light_3', label: 'Light' },
+    { value: 'medium_4', label: 'Medium' },
+    { value: 'bulky_5', label: 'Bulky' },
+    { value: 'super_bulky_6', label: 'Super bulky' },
+    { value: 'jumbo_7', label: 'Jumbo' },
+    { value: 'unknown', label: 'Unknown' },
+  ]
   const stockUnits = [
     { value: 'skein', label: 'Skein' },
     { value: 'ball', label: 'Ball' },
@@ -88,53 +99,16 @@ function StockUnitPicker() {
     { value: 'set', label: 'Set' },
     { value: 'pack', label: 'Pack' },
   ]
-
-  return (
-    <select name="stock_unit" defaultValue="skein">
-      {stockUnits.map((stockUnit) => (
-        <option key={stockUnit.value} value={stockUnit.value}>
-          {stockUnit.label}
-        </option>
-      ))}
-    </select>
-  )
-}
-
-function YarnWeightClassPicker() {
-  const yarnWeightClasses = [
-    { value: 'lace_0', label: 'Lace' },
-    { value: 'super_fine_1', label: 'Super fine' },
-    { value: 'fine_2', label: 'Fine' },
-    { value: 'light_3', label: 'Light' },
-    { value: 'medium_4', label: 'Medium' },
-    { value: 'bulky_5', label: 'Bulky' },
-    { value: 'super_bulky_6', label: 'Super bulky' },
-    { value: 'jumbo_7', label: 'Jumbo' },
-    { value: 'unknown', label: 'Unknown' },
+  const supplyTypes = [
+    { value: 'yarn', label: 'Yarn' },
+    { value: 'crochet_thread', label: 'Crochet thread' },
+    { value: 'sewing_thread', label: 'Sewing thread' },
+    { value: 'embroidery_floss', label: 'Embroidery floss' },
+    { value: 'fabric', label: 'Fabric' },
+    { value: 'elastic', label: 'Elastic' },
+    { value: 'ribbon', label: 'Ribbon' },
+    { value: 'cord', label: 'Cord' },
   ]
-
-  return (
-    <label>
-      Yarn weight class
-      <select name="yarn_weight_class" defaultValue="lace_0">
-        {yarnWeightClasses.map((yarnWeightClass) => (
-          <option key={yarnWeightClass.value} value={yarnWeightClass.value}>
-            {yarnWeightClass.label}
-          </option>
-        ))}
-      </select>
-    </label>
-  )
-}
-
-
-function Create() {
-  const navigate = useNavigate()
-  const [supplyType, setSupplyType] = useState('yarn')
-  const [requestError, setRequestError] = useState<string | null>(null)
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors | null>(null)
-  const [loading, setLoading] = useState(false)
-
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -201,10 +175,7 @@ function Create() {
         <input type="text" name="name" defaultValue="" />
       </label>
 
-      <label>
-        Supply type
-        <SupplyTypePicker value={supplyType} onChange={setSupplyType} />
-      </label>
+      <SelectField label="Supply type" name="supply_type" defaultValue="yarn" onChange={ setSupplyType } options={supplyTypes} />
 
       <label>
         Color
@@ -215,10 +186,7 @@ function Create() {
         <input type="number" step="1" min="0" name="stock_quantity" defaultValue="1" />
       </label>
 
-      <label>
-        Stock unit
-        <StockUnitPicker />
-      </label>
+      <SelectField label="Stock unit" name="stock_unit" defaultValue="skein" options={stockUnits} />
 
       <label>
         Length per unit m
@@ -226,7 +194,7 @@ function Create() {
       </label>
 
 
-      {supplyType === "yarn" && <YarnWeightClassPicker />}
+      {supplyType === 'yarn' && <SelectField label="Yarn weight class" name="yarn_weight_class" defaultValue="lace_0" options={yarnWeightClasses} />}
 
 
       <SubmitButton loading={loading} />
