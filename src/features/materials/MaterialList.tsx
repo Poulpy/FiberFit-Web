@@ -1,29 +1,13 @@
-import { NavLink } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import type { Material } from './materials.types.ts'
-
+import { MaterialRow } from './MaterialRow.tsx'
 const materialsUrl = 'http://localhost:3000/materials'
-
-type MaterialRowProps = {
-  material: Material
-}
 
 function MaterialList() {
   const [loading, setLoading] = useState(true)
   const [materials, setMaterials] = useState<Material[]>([])
   const [error, setError] = useState<string | null>(null)
 
-  function MaterialRow(props: MaterialRowProps) {
-    return <li key={props.material.id}>
-          {props.material.name}, {props.material.supply_type}, color: {props.material.color}, stock: {props.material.stock_quantity}
-          <br />
-          yarn weight: {props.material.yarn_weight_class}
-
-      <NavLink to={`/materials/edit/${props.material.id}`} end>
-        Edit
-      </NavLink>
-    </li>
-  }
 
   useEffect(() => {
     async function fetchData() {

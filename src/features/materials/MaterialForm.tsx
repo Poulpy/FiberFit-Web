@@ -29,7 +29,7 @@ function MaterialForm() {
         if (response.ok) {
           setMaterial(await response.json() as Material)
         } else {
-          setError(`Erreur inconnue: ${response.status}`)
+          setError(`Erreur serveur: ${response.status}`)
         }
       } catch(e) {
         if (e instanceof Error) {

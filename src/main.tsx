@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Route path="materials">
         <Route index element={<MaterialsPage />} />
         <Route path="new" element={<MaterialForm />} />
-        <Route path="edit/:id" element={<MaterialForm />} />
+        <Route path=":id/edit" element={<MaterialForm />} />
       </Route>
     </Routes>
 
