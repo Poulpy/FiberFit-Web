@@ -46,7 +46,10 @@ function MaterialList() {
   return (
     <ul>
       {materials.map(material =>
-        <MaterialRow key={material.id} material={material}/>
+        <MaterialRow key={material.id} material={material} onDelete={id =>
+          setMaterials(currentMaterials =>
+            currentMaterials.filter(material => material.id !== id),
+        )}/>
       )}
      </ul>
     )
