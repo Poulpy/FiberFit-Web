@@ -36,3 +36,9 @@ See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rule
 ```
 npm run dev
 ```
+
+## Format
+
+```
+npx prettier . --write
+```
