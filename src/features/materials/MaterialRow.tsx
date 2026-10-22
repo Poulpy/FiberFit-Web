@@ -10,9 +10,9 @@ type MaterialRowProps = {
 }
 
 export function MaterialRow(props: MaterialRowProps) {
-  const [loading, setLoading] = useState<boolean>(false)
-
   function DeleteButton() {
+    const [loading, setLoading] = useState<boolean>(false)
+
     return <button disabled={loading} onClick={() => {
         setLoading(true)
         if (window.confirm("Supprimer ce matériel ?")) {
@@ -29,8 +29,10 @@ export function MaterialRow(props: MaterialRowProps) {
           }
 
           handleDelete()
+        } else {
+          setLoading(false)
         }
-        setLoading(false)
+
       }}>
       {loading ? "Chargement..." : "Supprimer"}
     </button>
