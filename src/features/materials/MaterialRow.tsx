@@ -1,13 +1,40 @@
 import { NavLink } from 'react-router-dom'
 import type { Material } from './materials.types'
 import { deleteMaterial } from './materials.api'
+import { useState } from 'react'
 
 type MaterialRowProps = {
   material: Material,
   onDelete: (id: number) => void
+  onError: (message: string) => void
 }
 
 export function MaterialRow(props: MaterialRowProps) {
+  const [loading, setLoading] = useState<boolean>(false)
+
+  function DeleteButton() {
+    return <button disabled={loading} onClick={() => {
+        setLoading(true)
+        if (window.confirm("Supprimer ce matériel ?")) {
+          async function handleDelete() {
+            try {
+              await deleteMaterial(props.material.id)
+
+              props.onDelete(props.material.id)
+            } catch(error) {
+              props.onError(error instanceof Error ? error.message : "Erreur inconnue")
+            } finally {
+              setLoading(false)
+            }
+          }
+
+          handleDelete()
+        }
+        setLoading(false)
+      }}>
+      {loading ? "Chargement..." : "Supprimer"}
+    </button>
+  }
 
   return <li>
         {props.material.name}, {props.material.supply_type}, color: {props.material.color}, stock: {props.material.stock_quantity}
@@ -18,20 +45,6 @@ export function MaterialRow(props: MaterialRowProps) {
       Edit
     </NavLink>
 
-    <button onClick={() => {
-        if (window.confirm("Supprimer cet élément ?")) {
-          async function handleDelete() {
-            try {
-              await deleteMaterial(props.material.id)
-
-              props.onDelete(props.material.id)
-            } catch(error) {
-              console.error(error instanceof Error ? error.message : "Erreur inconnue")
-            }
-          }
-
-          handleDelete()
-        }
-      }}>Supprimer</button>
+    <DeleteButton />
   </li>
 }

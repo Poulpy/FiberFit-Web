@@ -49,7 +49,9 @@ function MaterialList() {
         <MaterialRow key={material.id} material={material} onDelete={id =>
           setMaterials(currentMaterials =>
             currentMaterials.filter(material => material.id !== id),
-        )}/>
+        )} onError={ message =>
+          setError(message)
+        } />
       )}
      </ul>
     )
