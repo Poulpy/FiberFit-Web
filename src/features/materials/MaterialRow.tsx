@@ -14,7 +14,7 @@ function DeleteButton(props: MaterialRowProps) {
 
   return <button disabled={loading} onClick={() => {
       setLoading(true)
-      if (window.confirm("Supprimer ce matériel ?")) {
+      if (window.confirm(`Supprimer ${props.material.name} ?`)) {
         async function handleDelete() {
           try {
             await deleteMaterial(props.material.id)
