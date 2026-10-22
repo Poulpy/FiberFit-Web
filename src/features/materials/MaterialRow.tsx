@@ -9,34 +9,35 @@ type MaterialRowProps = {
   onError: (message: string) => void
 }
 
-export function MaterialRow(props: MaterialRowProps) {
-  function DeleteButton() {
-    const [loading, setLoading] = useState<boolean>(false)
+function DeleteButton(props: MaterialRowProps) {
+  const [loading, setLoading] = useState<boolean>(false)
 
-    return <button disabled={loading} onClick={() => {
-        setLoading(true)
-        if (window.confirm("Supprimer ce matériel ?")) {
-          async function handleDelete() {
-            try {
-              await deleteMaterial(props.material.id)
+  return <button disabled={loading} onClick={() => {
+      setLoading(true)
+      if (window.confirm("Supprimer ce matériel ?")) {
+        async function handleDelete() {
+          try {
+            await deleteMaterial(props.material.id)
 
-              props.onDelete(props.material.id)
-            } catch(error) {
-              props.onError(error instanceof Error ? error.message : "Erreur inconnue")
-            } finally {
-              setLoading(false)
-            }
+            props.onDelete(props.material.id)
+          } catch(error) {
+            props.onError(error instanceof Error ? error.message : "Erreur inconnue")
+          } finally {
+            setLoading(false)
           }
-
-          handleDelete()
-        } else {
-          setLoading(false)
         }
 
-      }}>
-      {loading ? "Chargement..." : "Supprimer"}
-    </button>
-  }
+        handleDelete()
+      } else {
+        setLoading(false)
+      }
+
+    }}>
+    {loading ? "Chargement..." : "Supprimer"}
+  </button>
+}
+
+export function MaterialRow(props: MaterialRowProps) {
 
   return <li>
         {props.material.name}, {props.material.supply_type}, color: {props.material.color}, stock: {props.material.stock_quantity}
@@ -47,6 +48,6 @@ export function MaterialRow(props: MaterialRowProps) {
       Edit
     </NavLink>
 
-    <DeleteButton />
+    <DeleteButton material={props.material} onDelete={props.onDelete} onError={props.onError}/>
   </li>
 }

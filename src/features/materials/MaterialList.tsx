@@ -7,6 +7,7 @@ function MaterialList() {
   const [loading, setLoading] = useState(true)
   const [materials, setMaterials] = useState<Material[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
 
   useEffect(() => {
@@ -38,23 +39,32 @@ function MaterialList() {
   }
 
 
-  if (error != null) {
+  if (error !== null) {
     return <p style={{ color: "red" }}>{error}</p>
   }
 
+  const deleteErrorMsg = (
+    deleteError === null ? "" : <p style={{ color: "red" }}>{deleteError}</p>
+  )
+
+  const list = (<ul>
+        {materials.map(material =>
+          <MaterialRow key={material.id} material={material} onDelete={id =>
+            setMaterials(currentMaterials =>
+              currentMaterials.filter(material => material.id !== id),
+          )} onError={ message =>
+            setDeleteError(message)
+          } />
+        )}
+       </ul>)
+
 
   return (
-    <ul>
-      {materials.map(material =>
-        <MaterialRow key={material.id} material={material} onDelete={id =>
-          setMaterials(currentMaterials =>
-            currentMaterials.filter(material => material.id !== id),
-        )} onError={ message =>
-          setError(message)
-        } />
-      )}
-     </ul>
-    )
+    <>
+      {deleteErrorMsg}
+      {list}
+    </>
+  )
 }
 
 export default MaterialList
