@@ -41,10 +41,12 @@ function DeleteButton(props: MaterialRowProps) {
   );
 }
 
-function Show({id}: {id: number}) {
-  return <NavLink className="mx-5" to={`/materials/${id}`} end>
-    Show
-  </NavLink>
+function Show({ id }: { id: number }) {
+  return (
+    <NavLink className="mx-5" to={`/materials/${id}`} end>
+      Show
+    </NavLink>
+  );
 }
 
 export function MaterialRow(props: MaterialRowProps) {
