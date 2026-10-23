@@ -56,7 +56,6 @@ function MaterialShow() {
         setMaterial(await getMaterial(id))
       } catch(error) {
         setError(error instanceof Error ? error.message : "Erreur inconnue")
-      } finally {
       }
     }
 
