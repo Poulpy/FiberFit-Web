@@ -8,15 +8,20 @@ const materialsUrl = 'http://localhost:3000/materials';
 function MaterialList() {
   const [loading, setLoading] = useState(true);
   const [materials, setMaterials] = useState<Material[]>([]);
-  const [filteredMaterials, setFilteredMaterials] = useState<Material[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState<string>("");
   const [supplyTypeInput, setSupplyTypeInput] = useState<string>("all");
 
-  function search(search: string, supplyType: string) {
-    setSearchText(search)
-    setSupplyTypeInput(supplyType)
+  function search(search: string | null = null, supplyType: string | null = null): Material[] {
+    if (search !== null) {
+      setSearchText(search)
+    } else { search = searchText }
+
+    if (supplyType !== null) {
+      setSupplyTypeInput(supplyType)
+    } else { supplyType = supplyTypeInput }
+
     let filtered = materials
 
     if (search === '') {
@@ -29,7 +34,7 @@ function MaterialList() {
       filtered = filtered.filter((m) => m.supply_type === supplyType);
     }
 
-    setFilteredMaterials(filtered)
+    return filtered
   }
 
   useEffect(() => {
@@ -43,7 +48,6 @@ function MaterialList() {
         const resultat = await reponse.json();
 
         setMaterials(resultat);
-        setFilteredMaterials(resultat);
       } catch (erreur) {
         const message = erreur instanceof Error ? erreur.message : 'Erreur réseau';
         setError(message);
@@ -94,11 +98,11 @@ function MaterialList() {
   const deleteErrorMsg = deleteError === null ? '' : <p style={{ color: 'red' }}>{deleteError}</p>;
 
   const list =
-    filteredMaterials.length === 0 ? (
+    search().length === 0 ? (
       <p>Aucun résultat</p>
     ) : (
       <ul>
-        {filteredMaterials.map((material) => (
+        {search().map((material) => (
           <MaterialRow
             key={material.id}
             material={material}
@@ -106,9 +110,9 @@ function MaterialList() {
               setMaterials((currentMaterials) =>
                 currentMaterials.filter((material) => material.id !== id),
               )
-              setFilteredMaterials((currentMaterials) =>
-                currentMaterials.filter((material) => material.id !== id),
-              )
+              // setFilteredMaterials((currentMaterials) =>
+              //   currentMaterials.filter((material) => material.id !== id),
+              // )
               }}
             onError={(message) => setDeleteError(message)}
           />
