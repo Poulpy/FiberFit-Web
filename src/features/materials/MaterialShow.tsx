@@ -17,6 +17,33 @@ function ErrorMessage({message}: {message: string | null}) {
   }
 }
 
+function MaterialInfo({material}: {material: Material}) {
+  return <table>
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Supply type</th>
+        <th scope="col">Color</th>
+        <th scope="col">Stock quantity</th>
+        <th scope="col">Stock unit</th>
+        <th scope="col">Length per unit m</th>
+        <th scope="col">Yarn weight class</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{material.name}</td>
+        <td>{material.supply_type}</td>
+        <td>{material.color}</td>
+        <td>{material.stock_quantity}</td>
+        <td>{material.stock_unit}</td>
+        <td>{material.length_per_unit_m}</td>
+        <td>{material.yarn_weight_class}</td>
+      </tr>
+    </tbody>
+  </table>
+}
+
 function MaterialShow() {
   const { id } = useParams<{ id: string }>();
   const [material, setMaterial] = useState<Material | null>(null)
@@ -37,12 +64,21 @@ function MaterialShow() {
 
   }, [id])
 
+  if (error !== null) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (material === null) {
+    return <p>Chargement...</p>;
+  }
 
 
 
   return <>
     <ErrorMessage message={error} />
     <b>{material?.name}</b>
+    <br />
+    <MaterialInfo material={material} />
     <br />
     <GoBackButton />
   </>
