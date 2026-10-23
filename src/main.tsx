@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import MaterialsPage from './features/materials/MaterialsPage.tsx';
 import MaterialForm from './features/materials/MaterialForm.tsx';
 import App from './App.tsx';
+import MaterialShow from './features/materials/MaterialShow.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Route index element={<MaterialsPage />} />
         <Route path="new" element={<MaterialForm />} />
         <Route path=":id/edit" element={<MaterialForm />} />
+        <Route path=":id" element={<MaterialShow />} />
       </Route>
     </Routes>
   </BrowserRouter>,

@@ -41,6 +41,12 @@ function DeleteButton(props: MaterialRowProps) {
   );
 }
 
+function Show({id}: {id: number}) {
+  return <NavLink className="mx-5" to={`/materials/${id}`} end>
+    Show
+  </NavLink>
+}
+
 export function MaterialRow(props: MaterialRowProps) {
   return (
     <li>
@@ -51,6 +57,7 @@ export function MaterialRow(props: MaterialRowProps) {
       <NavLink to={`/materials/${props.material.id}/edit`} end>
         Edit
       </NavLink>
+      <Show id={props.material.id} />
       <DeleteButton material={props.material} onDelete={props.onDelete} onError={props.onError} />
     </li>
   );

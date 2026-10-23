@@ -1,3 +1,7 @@
+.mx-5 {
+  margin: 0 5px ;
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
