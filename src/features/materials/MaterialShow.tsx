@@ -9,22 +9,28 @@ function GoBackButton() {
   </NavLink>
 }
 
+function ErrorMessage({message}: {message: string | null}) {
+  if (message === null) {
+    return <></>
+  } else {
+    return <p style={{color: 'red' }}>{message}</p>
+  }
+}
+
 function MaterialShow() {
   const { id } = useParams<{ id: string }>();
   const [material, setMaterial] = useState<Material | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function apiCall() {
       if (!id) return;
       try {
         setMaterial(await getMaterial(id))
-
-      } catch(event) {
-
+      } catch(error) {
+        setError(error instanceof Error ? error.message : "Erreur inconnue")
       } finally {
-
       }
-
     }
 
     apiCall()
@@ -32,7 +38,10 @@ function MaterialShow() {
   }, [id])
 
 
+
+
   return <>
+    <ErrorMessage message={error} />
     <b>{material?.name}</b>
     <br />
     <GoBackButton />
