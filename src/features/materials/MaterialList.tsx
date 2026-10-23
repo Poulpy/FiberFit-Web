@@ -13,25 +13,17 @@ function MaterialList() {
   const [searchText, setSearchText] = useState<string>("");
   const [supplyTypeInput, setSupplyTypeInput] = useState<string>("all");
 
-  function search(search: string | null = null, supplyType: string | null = null): Material[] {
-    if (search !== null) {
-      setSearchText(search)
-    } else { search = searchText }
-
-    if (supplyType !== null) {
-      setSupplyTypeInput(supplyType)
-    } else { supplyType = supplyTypeInput }
-
+  function search(): Material[] {
     let filtered = materials
 
-    if (search === '') {
+    if (searchText === '') {
     } else {
-      filtered = materials.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()));
+      filtered = materials.filter((m) => m.name.toLowerCase().includes(searchText.toLowerCase()));
     }
 
-    if (supplyType == 'all') {
+    if (supplyTypeInput == 'all') {
     } else {
-      filtered = filtered.filter((m) => m.supply_type === supplyType);
+      filtered = filtered.filter((m) => m.supply_type === supplyTypeInput);
     }
 
     return filtered
@@ -71,7 +63,7 @@ function MaterialList() {
     <input
       type="text"
       onChange={(event) => {
-        search(event.target.value, supplyTypeInput)
+        setSearchText(event.target.value)
       }}
     />
   );
@@ -80,7 +72,7 @@ function MaterialList() {
     <>
       <select
         onChange={(event) => {
-          search(searchText, event.target.value)
+          setSupplyTypeInput(event.target.value)
         }}
       >
         <option key="all" value="all">
