@@ -10,11 +10,11 @@ function MaterialList() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState<string>("");
-  const [supplyTypeInput, setSupplyTypeInput] = useState<string>("all");
+  const [searchText, setSearchText] = useState<string>('');
+  const [supplyTypeInput, setSupplyTypeInput] = useState<string>('all');
 
   function search(): Material[] {
-    let filtered = materials
+    let filtered = materials;
 
     if (searchText === '') {
     } else {
@@ -26,7 +26,7 @@ function MaterialList() {
       filtered = filtered.filter((m) => m.supply_type === supplyTypeInput);
     }
 
-    return filtered
+    return filtered;
   }
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function MaterialList() {
     <input
       type="text"
       onChange={(event) => {
-        setSearchText(event.target.value)
+        setSearchText(event.target.value);
       }}
     />
   );
@@ -72,7 +72,7 @@ function MaterialList() {
     <>
       <select
         onChange={(event) => {
-          setSupplyTypeInput(event.target.value)
+          setSupplyTypeInput(event.target.value);
         }}
       >
         <option key="all" value="all">
@@ -101,11 +101,8 @@ function MaterialList() {
             onDelete={(id) => {
               setMaterials((currentMaterials) =>
                 currentMaterials.filter((material) => material.id !== id),
-              )
-              // setFilteredMaterials((currentMaterials) =>
-              //   currentMaterials.filter((material) => material.id !== id),
-              // )
-              }}
+              );
+            }}
             onError={(message) => setDeleteError(message)}
           />
         ))}
